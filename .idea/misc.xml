@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/activity_child.xml" value="0.18796296296296297" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/activity_settings.xml" value="0.1859375" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/activity_visualizer.xml" value="0.2" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/boarding_info.xml" value="0.1" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/flight_info.xml" value="0.1" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/layout/number_list_item.xml" value="0.18796296296296297" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/menu/visualizer_menu.xml" value="0.2" />
+        <entry key="..\:/Users/sagar/AndroidStudioProjects/ud851-Exercises/app/src/main/res/xml/pref_visualizer.xml" value="0.1859375" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

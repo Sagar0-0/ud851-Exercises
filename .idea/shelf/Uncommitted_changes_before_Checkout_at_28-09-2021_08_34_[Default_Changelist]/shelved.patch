@@ -1,0 +1,94 @@
+Index: app/src/main/java/com/example/android/datafrominternet/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\r\n * Copyright (C) 2016 The Android Open Source Project\r\n *\r\n * Licensed under the Apache License, Version 2.0 (the \"License\");\r\n * you may not use this file except in compliance with the License.\r\n * You may obtain a copy of the License at\r\n *\r\n *      http://www.apache.org/licenses/LICENSE-2.0\r\n *\r\n * Unless required by applicable law or agreed to in writing, software\r\n * distributed under the License is distributed on an \"AS IS\" BASIS,\r\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n * See the License for the specific language governing permissions and\r\n * limitations under the License.\r\n */\r\npackage com.example.android.datafrominternet;\r\n\r\nimport android.content.Context;\r\nimport android.os.Bundle;\r\nimport android.support.v7.app.AppCompatActivity;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.widget.EditText;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    private EditText mSearchBoxEditText;\r\n\r\n    private TextView mUrlDisplayTextView;\r\n\r\n    private TextView mSearchResultsTextView;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        mSearchBoxEditText = (EditText) findViewById(R.id.et_search_box);\r\n\r\n        mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);\r\n        mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_results_json);\r\n    }\r\n\r\n    // TODO (2) Create a method called makeGithubSearchQuery\r\n    // TODO (3) Within this method, build the URL with the text from the EditText and set the built URL to the TextView\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        getMenuInflater().inflate(R.menu.main, menu);\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item) {\r\n        int itemThatWasClickedId = item.getItemId();\r\n        if (itemThatWasClickedId == R.id.action_search) {\r\n            // TODO (4) Remove the Toast message when the search menu item is clicked\r\n            Context context = MainActivity.this;\r\n            String textToShow = \"Search clicked\";\r\n            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();\r\n            // TODO (5) Call makeGithubSearchQuery when the search menu item is clicked\r\n            return true;\r\n        }\r\n        return super.onOptionsItemSelected(item);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/android/datafrominternet/MainActivity.java b/app/src/main/java/com/example/android/datafrominternet/MainActivity.java
+--- a/app/src/main/java/com/example/android/datafrominternet/MainActivity.java	
++++ b/app/src/main/java/com/example/android/datafrominternet/MainActivity.java	
+@@ -18,12 +18,17 @@
+ import android.content.Context;
+ import android.os.Bundle;
+ import android.support.v7.app.AppCompatActivity;
++import android.text.TextUtils;
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.widget.EditText;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
++import com.example.android.datafrominternet.utilities.NetworkUtils;
++
++import java.net.URL;
++
+ public class MainActivity extends AppCompatActivity {
+ 
+     private EditText mSearchBoxEditText;
+@@ -43,8 +48,11 @@
+         mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_results_json);
+     }
+ 
+-    // TODO (2) Create a method called makeGithubSearchQuery
+-    // TODO (3) Within this method, build the URL with the text from the EditText and set the built URL to the TextView
++    void makeGithubSearchQuery(){
++        String githubQuery=mSearchBoxEditText.getText().toString();
++        URL githubSearchUrl= NetworkUtils.buildUrl(githubQuery);
++        mUrlDisplayTextView.setText(githubSearchUrl.toString());
++    }
+ 
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+@@ -56,11 +64,7 @@
+     public boolean onOptionsItemSelected(MenuItem item) {
+         int itemThatWasClickedId = item.getItemId();
+         if (itemThatWasClickedId == R.id.action_search) {
+-            // TODO (4) Remove the Toast message when the search menu item is clicked
+-            Context context = MainActivity.this;
+-            String textToShow = "Search clicked";
+-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+-            // TODO (5) Call makeGithubSearchQuery when the search menu item is clicked
++            makeGithubSearchQuery();
+             return true;
+         }
+         return super.onOptionsItemSelected(item);
+Index: app/src/main/java/com/example/android/datafrominternet/utilities/NetworkUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\r\n * Copyright (C) 2016 The Android Open Source Project\r\n *\r\n * Licensed under the Apache License, Version 2.0 (the \"License\");\r\n * you may not use this file except in compliance with the License.\r\n * You may obtain a copy of the License at\r\n *\r\n *      http://www.apache.org/licenses/LICENSE-2.0\r\n *\r\n * Unless required by applicable law or agreed to in writing, software\r\n * distributed under the License is distributed on an \"AS IS\" BASIS,\r\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n * See the License for the specific language governing permissions and\r\n * limitations under the License.\r\n */\r\npackage com.example.android.datafrominternet.utilities;\r\n\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.net.HttpURLConnection;\r\nimport java.net.URL;\r\nimport java.util.Scanner;\r\n\r\n/**\r\n * These utilities will be used to communicate with the network.\r\n */\r\npublic class NetworkUtils {\r\n\r\n    final static String GITHUB_BASE_URL =\r\n            \"https://api.github.com/search/repositories\";\r\n\r\n    final static String PARAM_QUERY = \"q\";\r\n\r\n    /*\r\n     * The sort field. One of stars, forks, or updated.\r\n     * Default: results are sorted by best match if no field is specified.\r\n     */\r\n    final static String PARAM_SORT = \"sort\";\r\n    final static String sortBy = \"stars\";\r\n\r\n    /**\r\n     * Builds the URL used to query GitHub.\r\n     *\r\n     * @param githubSearchQuery The keyword that will be queried for.\r\n     * @return The URL to use to query the GitHub server.\r\n     */\r\n    public static URL buildUrl(String githubSearchQuery) {\r\n        // TODO (1) Fill in this method to build the proper GitHub query URL\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * This method returns the entire result from the HTTP response.\r\n     *\r\n     * @param url The URL to fetch the HTTP response from.\r\n     * @return The contents of the HTTP response.\r\n     * @throws IOException Related to network and stream reading\r\n     */\r\n    public static String getResponseFromHttpUrl(URL url) throws IOException {\r\n        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();\r\n        try {\r\n            InputStream in = urlConnection.getInputStream();\r\n\r\n            Scanner scanner = new Scanner(in);\r\n            scanner.useDelimiter(\"\\\\A\");\r\n\r\n            boolean hasInput = scanner.hasNext();\r\n            if (hasInput) {\r\n                return scanner.next();\r\n            } else {\r\n                return null;\r\n            }\r\n        } finally {\r\n            urlConnection.disconnect();\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/android/datafrominternet/utilities/NetworkUtils.java b/app/src/main/java/com/example/android/datafrominternet/utilities/NetworkUtils.java
+--- a/app/src/main/java/com/example/android/datafrominternet/utilities/NetworkUtils.java	
++++ b/app/src/main/java/com/example/android/datafrominternet/utilities/NetworkUtils.java	
+@@ -15,6 +15,8 @@
+  */
+ package com.example.android.datafrominternet.utilities;
+ 
++import android.net.Uri;
++
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.net.HttpURLConnection;
+@@ -45,8 +47,17 @@
+      * @return The URL to use to query the GitHub server.
+      */
+     public static URL buildUrl(String githubSearchQuery) {
+-        // TODO (1) Fill in this method to build the proper GitHub query URL
+-        return null;
++        Uri builduri= Uri.parse(GITHUB_BASE_URL).buildUpon()
++                .appendQueryParameter(PARAM_QUERY,githubSearchQuery)
++                .appendQueryParameter(PARAM_SORT,sortBy).build();
++
++        URL url=null;
++        try{
++            url=new URL(builduri.toString());
++        }catch (Exception e){
++            e.printStackTrace();
++        }
++        return url;
+     }
+ 
+     /**
